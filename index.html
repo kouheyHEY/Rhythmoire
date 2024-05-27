@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RhythMoire</title>
+
+    <!-- CSSの設定 -->
+    <style>
+        @font-face {
+            font-family: "Bit12Bold";
+            src: url("./assets/font/PixelMplus12-Bold.ttf");
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: "Bit12";
+            src: url("./assets/font/PixelMplus12-Regular.ttf");
+            font-weight: 400;
+        }
+
+        body {
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="font-family:Bit12Bold; position:absolute; left:-1000px; visibility:hidden;">.</div>
+    <div style="font-family:Bit12; position:absolute; left:-1000px; visibility:hidden;">.</div>
+    <main>
+        <div id="gameContainer"></div>
+        <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+
+        <!-- 定数クラス -->
+        <script src="script/Const/ConstCommon.js"></script>
+        <script src="script/Const/GameSceneConst.js"></script>
+        <script src="script/Const/AssetsConst.js"></script>
+
+        <!-- モデル -->
+        <script src="script/Model/ScoreInfo.js"></script>
+
+        <!-- スプライト -->
+        <script src="script/Sprite/Player.js"></script>
+        <script src="script/Sprite/Enemy.js"></script>
+        <script src="script/Sprite/Boss.js"></script>
+
+        <!-- シーンクラス -->
+        <script src="script/Scene/PreLoadScene.js"></script>
+        <script src="script/Scene/TitleScene.js"></script>
+        <script src="script/Scene/GameScene.js"></script>
+        <script src="script/Scene/GameOverScene.js"></script>
+
+        <!-- 実行用 -->
+        <script src="script/main.js"></script>
+    </main>
+
+    <footer>
+
+    </footer>
+</body>
+
+</html>
