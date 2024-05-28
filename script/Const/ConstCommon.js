@@ -12,6 +12,8 @@ const C_COMMON = {
     SCENE_PRELOADSCENE: 'PreLoadScene',
     /** シーン名 TitleScene */
     SCENE_TITLESCENE: 'TitleScene',
+    /** シーン名 SelectMusicScene */
+    SCENE_SELECTMUSICSCENE: 'SelectMusicScene',
     /** シーン名 GameScene */
     SCENE_GAMESCENE: 'GameScene',
     /** シーン名 GameOverScene */

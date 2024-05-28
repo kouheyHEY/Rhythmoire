@@ -1,4 +1,4 @@
-const C_GAMESCENE = {
+const C_GS = {
     /** プレイヤーの初期位置X */
     PLAYER_INIT_POS_X: C_COMMON.D_WIDTH / 2,
     /** プレイヤーの初期位置Y */
