@@ -19,7 +19,6 @@ const config = {
 	scene: [
 		PreLoadScene,
 		TitleScene,
-		SelectMusicScene,
 		GameScene,
 		GameOverScene,
 	],
