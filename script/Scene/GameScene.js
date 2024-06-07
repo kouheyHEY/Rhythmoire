@@ -6,6 +6,7 @@ class GameScene extends Phaser.Scene {
     create() {
         /* 変数定義 */
 
+        this.frameCount = 0;
         // デバイスの種類を保持
         this.deviceIsPC = !this.sys.game.device.os.android && !this.sys.game.device.os.iOS;
 
@@ -16,17 +17,17 @@ class GameScene extends Phaser.Scene {
         this.pointerX = 0;
         this.pointerY = 0;
 
+        // ノーツ数
+        this.laneNum = 7;
+
         // ゲームオーバーフラグ
         this.gameOverFlg = false;
 
         /** @type {ScoreInfo} スコア情報 */
         this.scoreInfo = new ScoreInfo();
 
-        // ノーツのグループを作成する
-        this.noteGroup = this.physics.add.group();
-
-        // レーン数
-        this.laneNum = 7;
+        /** @type {NoteManager} ノートマネージャ */
+        this.noteMng = new NoteManager(this, this.laneNum);
 
 
         /* 画面描画 */
@@ -90,6 +91,7 @@ class GameScene extends Phaser.Scene {
                 bullet.destroy();
             }
         });
+        */
 
         // テキスト更新
         this.labelFps.setText('fps : ' + Math.floor(this.game.loop.actualFps));
@@ -101,10 +103,15 @@ class GameScene extends Phaser.Scene {
             this.scene.start(C_COMMON.SCENE_GAMEOVERSCENE, { scoreInfo: this.scoreInfo });
         }
 
-        */
 
         // フレームカウント加算
         this.frameCount++;
+
+        // ノーツの生成
+        if (this.frameCount % 30 === 0) {
+            console.log("noteCreate");
+            this.noteMng.createNoteToLane((this.frameCount / 30) % this.laneNum);
+        }
 
     }
 

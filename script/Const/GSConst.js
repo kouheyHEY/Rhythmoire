@@ -22,4 +22,15 @@ const C_GS = {
     /** レーンの太さ */
     LANE_WEIGHT: 4,
 
+    /** ノーツの縦幅 */
+    NOTES_HEIGHT: 16,
+
+    /** ノーツの色 内側 */
+    NOTES_NORMAL_COLOR_FILL: 0xffffff,
+    /** ノーツの色 外側 */
+    NOTES_NORMAL_COLOR_EDGE: 0x888888,
+
+    /** ノーツの下降スピード（px/1000ms） */
+    NOTES_SPEED: 256,
+
 }
