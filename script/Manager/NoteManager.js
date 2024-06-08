@@ -3,10 +3,14 @@ class NoteManager {
         this.scene = scene;
         this.laneNum = laneNum;
         this.noteGroupList = [];
+        this.tweenGroupList = [];
 
-        // ノーツのグループを作成する
+        this.tweenPauseFlg = false;
+
+        // ノーツとトゥイーンのグループを作成する
         for (let l = 0; l < this.laneNum; l++) {
             this.noteGroupList.push(this.scene.add.group());
+            this.tweenGroupList.push(this.scene.add.group());
         }
     }
 
@@ -16,6 +20,10 @@ class NoteManager {
      * @returns false:失敗 true:成功
      */
     createNoteToLane(laneIdx) {
+        if (this.tweenPauseFlg) {
+            return true;
+        }
+
         // レーン数チェック
         if (laneIdx >= this.laneNum || laneIdx < 0) {
             return false;
@@ -53,17 +61,42 @@ class NoteManager {
 
         // 図形を下に移動するトゥイーンを作成
         // 等速直線運動
-        this.scene.tweens.add({
-            targets: note,
-            y: C_COMMON.D_HEIGHT + C_GS.NOTES_HEIGHT * 2,
-            duration: C_COMMON.D_HEIGHT / C_GS.NOTES_SPEED * 1000,
-            ease: 'Linear',
-            onComplete: () => {
-                note.destroy();
-            }
-        });
+        this.tweenGroupList[laneIdx].add(
+            this.scene.tweens.add({
+                targets: note,
+                y: C_COMMON.D_HEIGHT + C_GS.NOTES_HEIGHT * 2,
+                duration: C_COMMON.D_HEIGHT / C_GS.NOTES_SPEED * 1000,
+                ease: 'Linear',
+                onComplete: () => {
+                    note.destroy();
+                }
+            })
+        );
 
         this.noteGroupList[laneIdx].add(note);
 
     }
+
+    /**
+     * すべてのトゥイーンを停止する
+     */
+    pauseAllNotes() {
+        if (this.tweenPauseFlg) {
+            return;
+        }
+        this.scene.tweens.pauseAll();
+        this.tweenPauseFlg = true;
+    }
+
+    /**
+     * すべてのトゥイーンを再開する
+     */
+    resumeAllNotes() {
+        if (!this.tweenPauseFlg) {
+            return;
+        }
+        this.scene.tweens.resumeAll();
+        this.tweenPauseFlg = false;
+    }
+
 }

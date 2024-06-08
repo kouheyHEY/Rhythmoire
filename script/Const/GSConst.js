@@ -13,11 +13,11 @@ const C_GS = {
     /** レーンの色（中） */
     LANE_COLOR_MID: 0x66FF66,
     /** レーンの背景（左端） */
-    LANE_BGCOLOR_LEFT: 0x080819,
+    LANE_BGCOLOR_LEFT: 0x08081c,
     /** レーンの背景（右端） */
-    LANE_BGCOLOR_RIGHT: 0x190808,
+    LANE_BGCOLOR_RIGHT: 0x1c0808,
     /** レーンの背景（中間） */
-    LANE_BGCOLOR_MID: 0x081908,
+    LANE_BGCOLOR_MID: 0x081c08,
 
     /** レーンの太さ */
     LANE_WEIGHT: 4,
@@ -33,4 +33,10 @@ const C_GS = {
     /** ノーツの下降スピード（px/1000ms） */
     NOTES_SPEED: 256,
 
-}
+    /** 判定線の位置（下から） */
+    NOTESLINE_Y: 128,
+    /** 判定線の色 */
+    NOTESLINE_COLOR: 0xff0000,
+    /** 判定線の太さ */
+    NOTESLINE_WEIGHT: 16,
+};
