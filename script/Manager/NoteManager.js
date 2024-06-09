@@ -30,11 +30,11 @@ class NoteManager {
         }
 
         // ノーツの初期位置
-        let noteX = C_GS.LANE_INIT_X;
-        let noteY = - C_GS.NOTES_HEIGHT * 2;
+        let noteInitX = C_GS.LANE_INIT_X;
+        let noteInitY = - C_GS.NOTES_HEIGHT * 2;
 
         if (laneIdx >= 1) {
-            noteX += C_GS.LANE_WIDTH_ENDS + (laneIdx - 1) * C_GS.LANE_WIDTH_MID;
+            noteInitX += C_GS.LANE_WIDTH_ENDS + (laneIdx - 1) * C_GS.LANE_WIDTH_MID;
         }
 
         // ノーツの幅、高さ
@@ -56,19 +56,19 @@ class NoteManager {
             .fillStyle(C_GS.NOTES_NORMAL_COLOR_FILL, 1);
 
         // 長方形を描画
-        note.fillRect(noteX, noteY, noteW, noteH)
-            .strokeRect(noteX, noteY, noteW, noteH);
+        note.fillRect(noteInitX, noteInitY, noteW, noteH)
+            .strokeRect(noteInitX, noteInitY, noteW, noteH);
 
         // 図形を下に移動するトゥイーンを作成
         // 等速直線運動
         this.tweenGroupList[laneIdx].add(
             this.scene.tweens.add({
                 targets: note,
-                y: C_COMMON.D_HEIGHT + C_GS.NOTES_HEIGHT * 2,
+                y: C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y + C_GS.NOTES_HEIGHT * 3 / 2,
                 duration: C_COMMON.D_HEIGHT / C_GS.NOTES_SPEED * 1000,
                 ease: 'Linear',
                 onComplete: () => {
-                    note.destroy();
+                    this.pauseAllNotes();
                 }
             })
         );

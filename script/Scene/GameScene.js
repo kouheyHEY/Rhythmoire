@@ -29,6 +29,8 @@ class GameScene extends Phaser.Scene {
         /** @type {NoteManager} ノートマネージャ */
         this.noteMng = new NoteManager(this, this.laneNum);
 
+        /** キーイベントの設定 */
+
 
         /* 画面描画 */
 
@@ -61,7 +63,6 @@ class GameScene extends Phaser.Scene {
      * 毎フレーム行う更新処理
      */
     update() {
-
 
         /*
         this.input.on('pointerdown', (pointer) => {
@@ -108,19 +109,12 @@ class GameScene extends Phaser.Scene {
         this.frameCount++;
 
         // ノーツの生成
-        if (this.frameCount % 30 === 0) {
-            console.log("noteCreate");
-            this.noteMng.createNoteToLane((this.frameCount / 30) % this.laneNum);
-        }
+        // if (this.frameCount % 30 === 0) {
+        //     console.log("noteCreate");
+        //     this.noteMng.createNoteToLane((this.frameCount / 30) % this.laneNum);
+        // }
 
-        if (this.frameCount % 100 === 0) {
-            console.log("notePause");
-            if (this.noteMng.tweenPauseFlg) {
-                this.noteMng.resumeAllNotes();
-            } else {
-                this.noteMng.pauseAllNotes();
-            }
-        }
+        // ボタン押下時、ノーツのアニメーション再開＋ノーツ生成
 
     }
 
