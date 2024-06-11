@@ -7,6 +7,9 @@ class NoteManager {
 
         this.tweenPauseFlg = false;
 
+        /** ノーツが乗っているレーンの番号 */
+        this.onLineLane = 0;
+
         // ノーツとトゥイーンのグループを作成する
         for (let l = 0; l < this.laneNum; l++) {
             this.noteGroupList.push(this.scene.add.group());
@@ -69,6 +72,7 @@ class NoteManager {
                 ease: 'Linear',
                 onComplete: () => {
                     this.pauseAllNotes();
+                    this.setOnLineLane(laneIdx);
                 }
             })
         );
@@ -78,12 +82,21 @@ class NoteManager {
     }
 
     /**
+     * ノーツが停止しているレーンの番号を設定する
+     * @param {number} laneIdx ノーツが停止しているレーンの番号
+     */
+    setOnLineLane(laneIdx) {
+        this.onLineLane = laneIdx;
+    }
+
+    /**
      * すべてのトゥイーンを停止する
      */
     pauseAllNotes() {
         if (this.tweenPauseFlg) {
             return;
         }
+        console.log("STOP: " + this.onLineLane);
         this.scene.tweens.pauseAll();
         this.tweenPauseFlg = true;
     }
@@ -97,6 +110,16 @@ class NoteManager {
         }
         this.scene.tweens.resumeAll();
         this.tweenPauseFlg = false;
+    }
+
+    /**
+     * ノーツを削除する
+     * @param {number}
+     */
+    removeNote(lane) {
+        let removeNote = this.noteGroupList[lane].getChildren()[0];
+        this.noteGroupList[lane].remove(removeNote);
+        removeNote.destroy();
     }
 
 }

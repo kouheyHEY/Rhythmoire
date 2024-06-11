@@ -39,4 +39,15 @@ const C_GS = {
     NOTESLINE_COLOR: 0xff0000,
     /** 判定線の太さ */
     NOTESLINE_WEIGHT: 16,
+
+    /** レーンごとのキーのリスト */
+    LANE_KEY_LIST: [
+        "S",
+        "D",
+        "F",
+        "G",
+        "H",
+        "J",
+        "K"
+    ],
 };

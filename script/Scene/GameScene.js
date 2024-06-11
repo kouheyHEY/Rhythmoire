@@ -22,6 +22,8 @@ class GameScene extends Phaser.Scene {
 
         // ゲームオーバーフラグ
         this.gameOverFlg = false;
+        // ノーツ生成可能フラグ
+        this.createNotesFlg = true;
 
         /** @type {ScoreInfo} スコア情報 */
         this.scoreInfo = new ScoreInfo();
@@ -29,8 +31,11 @@ class GameScene extends Phaser.Scene {
         /** @type {NoteManager} ノートマネージャ */
         this.noteMng = new NoteManager(this, this.laneNum);
 
-        /** キーイベントの設定 */
-
+        /** @type {InputManager} キーイベントマネージャ */
+        this.inputMng = new InputManager(this);
+        for (let code of C_GS.LANE_KEY_LIST) {
+            this.inputMng.addKeyCodes(code);
+        }
 
         /* 画面描画 */
 
@@ -109,12 +114,23 @@ class GameScene extends Phaser.Scene {
         this.frameCount++;
 
         // ノーツの生成
-        // if (this.frameCount % 30 === 0) {
-        //     console.log("noteCreate");
-        //     this.noteMng.createNoteToLane((this.frameCount / 30) % this.laneNum);
-        // }
+        if (this.frameCount % 30 === 0 && this.createNotesFlg) {
+            console.log("noteCreate");
+            this.noteMng.createNoteToLane((this.frameCount / 30) % this.laneNum);
+        }
+
+        if (this.noteMng.tweenPauseFlg && this.createNotesFlg) {
+            this.createNotesFlg = false;
+        }
 
         // ボタン押下時、ノーツのアニメーション再開＋ノーツ生成
+        let laneKeyPushed = this.inputMng.getPushedKeyOf(C_GS.LANE_KEY_LIST[this.noteMng.onLineLane]);
+        if (this.noteMng.tweenPauseFlg && laneKeyPushed) {
+            console.log("noteCreate");
+            this.noteMng.removeNote(this.noteMng.onLineLane);
+            this.noteMng.resumeAllNotes();
+            this.noteMng.createNoteToLane(Math.floor(Math.random() * this.laneNum));
+        }
 
     }
 
