@@ -30,6 +30,23 @@ const C_GS = {
     /** ノーツの色 外側 */
     NOTES_NORMAL_COLOR_EDGE: 0x888888,
 
+    /** ノーツの色 左端 */
+    NOTES_COLOR_LEFT: 0x1111FF,
+    /** ノーツの色 左端 外側 */
+    NOTES_COLOR_LEFT_EDGE: 0x0A0A88,
+    /** ノーツの色 右端 */
+    NOTES_COLOR_RIGHT: 0xFF1111,
+    /** ノーツの色 右端 外側 */
+    NOTES_COLOR_RIGHT_EDGE: 0x880A0A,
+    /** ノーツの色 中間_奇数 */
+    NOTES_COLOR_ODD: 0xDDFFDD,
+    /** ノーツの色 中間_奇数 外側 */
+    NOTES_COLOR_ODD_EDGE: 0x0A550A,
+    /** ノーツの色 中間_偶数 */
+    NOTES_COLOR_EVEN: 0x448844,
+    /** ノーツの色 中間_偶数 */
+    NOTES_COLOR_EVEN_EDGE: 0x0A550A,
+
     /** ノーツの下降スピード（px/1000ms） */
     NOTES_SPEED: 256,
 

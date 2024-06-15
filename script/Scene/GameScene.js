@@ -109,7 +109,6 @@ class GameScene extends Phaser.Scene {
             this.scene.start(C_COMMON.SCENE_GAMEOVERSCENE, { scoreInfo: this.scoreInfo });
         }
 
-
         // フレームカウント加算
         this.frameCount++;
 

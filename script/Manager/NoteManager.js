@@ -52,11 +52,31 @@ class NoteManager {
 
         noteH = C_GS.NOTES_HEIGHT;
 
+        // ノーツの色
+        let noteColorEdge = 0;
+        let noteColor = 0;
+
+        if (laneIdx === 0) {
+            noteColor = C_GS.NOTES_COLOR_LEFT;
+            noteColorEdge = C_GS.NOTES_COLOR_LEFT_EDGE;
+        } else if (laneIdx === this.laneNum - 1) {
+            noteColor = C_GS.NOTES_COLOR_RIGHT;
+            noteColorEdge = C_GS.NOTES_COLOR_RIGHT_EDGE;
+        } else {
+            if (laneIdx % 2 === 0) {
+                noteColor = C_GS.NOTES_COLOR_EVEN;
+                noteColorEdge = C_GS.NOTES_COLOR_EVEN_EDGE;
+            } else {
+                noteColor = C_GS.NOTES_COLOR_ODD;
+                noteColorEdge = C_GS.NOTES_COLOR_ODD_EDGE;
+            }
+        }
+
         // ノートオブジェクトの生成
         let note = this.scene.add.graphics();
 
-        note.lineStyle(2, C_GS.NOTES_NORMAL_COLOR_EDGE)
-            .fillStyle(C_GS.NOTES_NORMAL_COLOR_FILL, 1);
+        note.lineStyle(2, noteColorEdge)
+            .fillStyle(noteColor, 1);
 
         // 長方形を描画
         note.fillRect(noteInitX, noteInitY, noteW, noteH)
