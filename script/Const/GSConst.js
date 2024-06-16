@@ -48,7 +48,7 @@ const C_GS = {
     NOTES_COLOR_EVEN_EDGE: 0x0A550A,
 
     /** ノーツの下降スピード（px/1000ms） */
-    NOTES_SPEED: 256,
+    NOTES_SPEED: 480,
 
     /** 判定線の位置（下から） */
     NOTESLINE_Y: 128,
