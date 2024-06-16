@@ -50,6 +50,11 @@ const C_GS = {
     /** ノーツの下降スピード（px/1000ms） */
     NOTES_SPEED: 480,
 
+    /** ノーツの判定幅 frame（GREAT） */
+    NOTES_SCORE_GREAT: 2,
+    /** ノーツの判定幅 frame（GOOD） */
+    NOTES_SCORE_GOOD: 25,
+
     /** 判定線の位置（下から） */
     NOTESLINE_Y: 128,
     /** 判定線の色 */
