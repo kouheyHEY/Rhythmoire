@@ -69,36 +69,6 @@ class GameScene extends Phaser.Scene {
      */
     update() {
 
-        /*
-        this.input.on('pointerdown', (pointer) => {
-            // スマートフォンの場合、マウスの基点を保持
-            if (!this.deviceIsPC) {
-                this.pointerBaseX = pointer.x;
-                this.pointerBaseY = pointer.y;
-                this.playerBaseX = this.player.x;
-                this.playerBaseY = this.player.y;
-            }
-        });
-
-        // 画面外に出たプレイヤーの弾を削除
-        this.playerBullets.getChildren().forEach(bullet => {
-            if (bullet.y < 0) {
-                bullet.destroy();
-            }
-        });
-
-        // 画面外に出た敵の弾を削除
-        this.enemyBullets.getChildren().forEach(bullet => {
-            if (bullet.y > C_COMMON.D_HEIGHT
-                || bullet.y < 0
-                || bullet.x > C_COMMON.D_WIDTH
-                || bullet.x < 0
-            ) {
-                bullet.destroy();
-            }
-        });
-        */
-
         // テキスト更新
         this.labelFps.setText('fps : ' + Math.floor(this.game.loop.actualFps));
 
@@ -150,7 +120,7 @@ class GameScene extends Phaser.Scene {
         let notesLineWidth = 0;
         let notesLineHeight = C_GS.NOTESLINE_WEIGHT;
         let notesLineX = C_GS.LANE_INIT_X;
-        let notesLineY = C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y;
+        let notesLineY = C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y - C_GS.NOTESLINE_WEIGHT * 3 / 2;
 
         for (let l = 0; l <= this.laneNum; l++) {
             // レーンの色を設定

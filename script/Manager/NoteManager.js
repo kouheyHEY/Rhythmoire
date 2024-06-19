@@ -87,12 +87,12 @@ class NoteManager {
         this.tweenGroupList[laneIdx].add(
             this.scene.tweens.add({
                 targets: note,
-                y: C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y + C_GS.NOTES_HEIGHT * 3 / 2,
+                y: C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y,
                 duration: C_COMMON.D_HEIGHT / C_GS.NOTES_SPEED * 1000,
                 ease: 'Linear',
                 onComplete: () => {
-                    this.pauseAllNotes();
                     this.setOnLineLane(laneIdx);
+                    this.pauseAllNotes(laneIdx);
                 }
             })
         );
@@ -116,9 +116,16 @@ class NoteManager {
         if (this.tweenPauseFlg) {
             return;
         }
-        console.log("STOP: " + this.onLineLane);
+        console.log("STOP LANE: " + this.onLineLane);
         this.scene.tweens.pauseAll();
         this.tweenPauseFlg = true;
+
+        // ノーツと判定ラインの距離をデバッグ出力
+        if (this.onLineLane !== null) {
+            console.log(`judgeH : ${this.noteGroupList[this.onLineLane].getChildren()[0].y -
+                (C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y)
+                }`);
+        }
     }
 
     /**
