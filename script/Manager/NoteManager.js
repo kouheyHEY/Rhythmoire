@@ -88,7 +88,7 @@ class NoteManager {
             this.scene.tweens.add({
                 targets: note,
                 y: C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y,
-                duration: C_COMMON.D_HEIGHT / C_GS.NOTES_SPEED * 1000,
+                duration: 1000 * C_COMMON.D_HEIGHT / C_GS.NOTES_SPEED,
                 ease: 'Linear',
                 onComplete: () => {
                     this.setOnLineLane(laneIdx);
@@ -116,6 +116,7 @@ class NoteManager {
         if (this.tweenPauseFlg) {
             return;
         }
+
         console.log("STOP LANE: " + this.onLineLane);
         this.scene.tweens.pauseAll();
         this.tweenPauseFlg = true;
