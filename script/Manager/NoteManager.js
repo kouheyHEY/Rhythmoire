@@ -8,9 +8,6 @@ class NoteManager {
         this.tweenPauseFlg = false;
         this.canCreateNoteFlg = true;
 
-        /** ノーツが乗っているレーンの番号 */
-        this.onLineLane = 0;
-
         // ノーツとトゥイーンのグループを作成する
         for (let l = 0; l < this.laneNum; l++) {
             this.noteGroupList.push(this.scene.add.group());
@@ -88,9 +85,6 @@ class NoteManager {
         note.x = noteInitX;
         note.y = noteInitY;
 
-        console.log(`note: (${note.x}, ${note.y})`);
-        console.log(`rect: (${noteInitX}, ${noteInitY})`);
-
         note.lineStyle(2, noteColorEdge)
             .fillStyle(noteColor, 1);
 
@@ -114,13 +108,10 @@ class NoteManager {
      * 全てのノーツを下に移動させる
      */
     moveAllNotes() {
-        for (let noteGroup of this.noteGroupList) {
+        for (const [laneIdx, noteGroup] of this.noteGroupList.entries()) {
             let removeNoteFlg = false;
             for (const [idx, note] of noteGroup.getChildren().entries()) {
                 note.y += C_GS.NOTES_SPEED;
-                if (note.y > (C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y)) {
-                    console.lg("aaa");
-                }
                 if (idx === 0 && note.y > C_COMMON.D_HEIGHT) {
                     removeNoteFlg = true;
                 }
@@ -128,8 +119,35 @@ class NoteManager {
             if (removeNoteFlg) {
                 let note = noteGroup.getChildren().shift();
                 note.destroy();
+                // エラー表示を行う
+                this.scene.dispNoteScoreRank('ERROR', laneIdx);
             }
         }
+    }
+
+    /**
+     * 指定したレーンのノーツを消去する（
+     * @param {number} laneIdx レーンの番号
+     * @returns ノーツの判定線とのフレーム数の差分（消去を行わないならfalse）
+     */
+    tapLane(laneIdx) {
+        let tapNote = this.noteGroupList[laneIdx].getChildren()[0];
+        if (tapNote == null) {
+            return 500;
+        }
+
+        // ノーツの判定線までのフレーム数
+        let toLineFrame = ((C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y) - tapNote.y) / C_GS.NOTES_SPEED;
+        // ノーツが判定線に到達するよりもはるか前なら消去を行わない
+        if (toLineFrame > C_GS.NOTES_SCORE_FRAME_ERROR) {
+            return toLineFrame;
+        }
+
+        // ノーツを削除し、フレーム数を返す
+        this.noteGroupList[laneIdx].getChildren().shift();
+        tapNote.destroy();
+
+        return toLineFrame;
     }
 
 }

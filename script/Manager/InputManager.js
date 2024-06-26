@@ -27,6 +27,6 @@ class InputManager {
      * @returns キーの状態（ちょうど押されていたらtrue）
      */
     getJustPushedKeyOf(keyCode) {
-        return Phaser.Input.Keyborad.JustDown(this.observeKeyMap[keyCode]);
+        return Phaser.Input.Keyboard.JustDown(this.observeKeyMap[keyCode]);
     }
 }

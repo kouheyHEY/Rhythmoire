@@ -48,12 +48,35 @@ const C_GS = {
     NOTES_COLOR_EVEN_EDGE: 0x0A550A,
 
     /** ノーツの下降スピード（px/frame） */
-    NOTES_SPEED: 6,
+    NOTES_SPEED: 8,
 
     /** ノーツの判定幅 frame（GREAT） */
-    NOTES_SCORE_GREAT: 2,
+    NOTES_SCORE_FRAME_GREAT: 2,
     /** ノーツの判定幅 frame（GOOD） */
-    NOTES_SCORE_GOOD: 25,
+    NOTES_SCORE_FRAME_GOOD: 9,
+    /** ノーツの判定幅 frame（ERROR） */
+    NOTES_SCORE_FRAME_ERROR: 30,
+
+    /** ノーツのスコアの割合 */
+    NOTES_SCORE_MAP: {
+        GREAT: 1.0,
+        GOOD: 0.5
+    },
+
+    /** ノーツのスコアの理想値 */
+    NOTES_SCORE_GREAT: 100,
+    /** ノーツのスコアの文字の大きさ */
+    NOTES_SCORE_TEXT_SIZE: '32px',
+    /** ノーツのスコアの文字の色 */
+    NOTES_SCORE_TEXT_COLOR_MAP: {
+        GREAT: '#FFDFBF',
+        GOOD: '#80B0EE',
+        ERROR: '#FF8080'
+    },
+    /** ノーツのスコアの上への移動距離 */
+    NOTES_SCORE_TEXT_UP_DIST: 16,
+    /** ノーツのスコアの表示時間(ms) */
+    NOTES_SCORE_TEXT_DISP_TIME: 200,
 
     /** 判定線の位置（下から） */
     NOTESLINE_Y: 128,

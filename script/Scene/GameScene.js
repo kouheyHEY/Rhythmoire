@@ -18,7 +18,15 @@ class GameScene extends Phaser.Scene {
         this.pointerY = 0;
 
         // ノーツ数
-        this.laneNum = 7;
+        this.laneNum = 4;
+
+        // 1ノーツ当たりの理想スコア
+        this.noteScore = C_GS.NOTES_SCORE_GREAT;
+
+        // 秒あたりのノーツの生成数
+        this.notePerSec = 8;
+        // ノーツの生成間隔
+        this.noteFrameSpan = Math.floor(C_COMMON.FPS / this.notePerSec);
 
         // ゲームオーバーフラグ
         this.gameOverFlg = false;
@@ -36,6 +44,9 @@ class GameScene extends Phaser.Scene {
         for (let code of C_GS.LANE_KEY_LIST) {
             this.inputMng.addKeyCodes(code);
         }
+
+        /** @type {NoteCreateManager} ノーツ作成マネージャ */
+        this.noteCreateMng = new NoteCreateManager(this.laneNum, this.noteMng);
 
         /* 画面描画 */
 
@@ -70,7 +81,11 @@ class GameScene extends Phaser.Scene {
     update() {
 
         // テキスト更新
+        // FPS表示
         this.labelFps.setText('fps : ' + Math.floor(this.game.loop.actualFps));
+
+        // スコア表示
+        this.textScore.setText(String(this.scoreInfo.scoreNum).padStart(6, '0'));
 
         // ゲームオーバー判定
         if (this.gameOverFlg) {
@@ -82,16 +97,35 @@ class GameScene extends Phaser.Scene {
         // フレームカウント加算
         this.frameCount++;
 
-        // ノーツの生成
-        if (this.frameCount % 30 === 0 && this.noteMng.canCreateNoteFlg) {
-            console.log("noteCreate");
-            this.noteMng.createNoteToLane((this.frameCount / 30) % this.laneNum);
-        }
+        /* ノーツの生成 */
+        this.noteCreateMng.createNote(this.frameCount);
 
-        // ボタン押下時、ノーツのアニメーション再開＋ノーツ生成
-        let laneKeyPushed = this.inputMng.getPushedKeyOf(C_GS.LANE_KEY_LIST[this.noteMng.onLineLane]);
-        if (laneKeyPushed) {
-            this.noteMng.removeNote(this.noteMng.onLineLane);
+        // ボタン押下時、ノーツの消去を行う
+        for (const [idx, key] of C_GS.LANE_KEY_LIST.entries()) {
+            if (idx > this.laneNum - 1) {
+                break;
+            }
+            if (this.inputMng.getJustPushedKeyOf(key)) {
+                let frameDist = Math.abs(this.noteMng.tapLane(idx));
+                if (frameDist <= C_GS.NOTES_SCORE_FRAME_ERROR) {
+                    let score = 0;
+                    let scoreRank = 'ERROR';
+                    // スコアの判定
+                    if (frameDist <= C_GS.NOTES_SCORE_FRAME_GREAT) {
+                        // GREATの判定
+                        score = this.noteScore * C_GS.NOTES_SCORE_MAP.GREAT;
+                        scoreRank = 'GREAT';
+                    } else if (frameDist <= C_GS.NOTES_SCORE_FRAME_GOOD) {
+                        // GOODの判定
+                        score = this.noteScore * C_GS.NOTES_SCORE_MAP.GOOD;
+                        scoreRank = 'GOOD';
+                    } else {
+                        scoreRank = 'ERROR';
+                    }
+                    this.dispNoteScoreRank(scoreRank, idx);
+                    this.scoreInfo.scoreNum += score;
+                }
+            }
         }
 
         // ノーツの移動
@@ -181,13 +215,42 @@ class GameScene extends Phaser.Scene {
             .closePath()
             .fill()
             .stroke();
+    }
 
-        this.grph.lineStyle(1, 0xFFFFFF);
-        this.grph.beginPath()
-            .moveTo(0, notesLineY)
-            .lineTo(10000, notesLineY)
-            .closePath()
-            .fill()
-            .stroke();
+    /**
+     * スコア文字列を表示する
+     * @param {string} scoreRank スコアランク
+     * @param {number} laneIdx レーンの順番
+     */
+    dispNoteScoreRank(scoreRank, laneIdx) {
+        // レーンの位置を計算
+        let scoreTextX = C_GS.LANE_INIT_X + C_GS.LANE_WIDTH_ENDS / 2;
+        let scoreTextY = C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y * 2;
+        if (laneIdx > 0 && laneIdx <= this.laneNum - 1) {
+            scoreTextX +=
+                C_GS.LANE_WIDTH_ENDS / 2
+                + (1 + (laneIdx - 1) * 2) * C_GS.LANE_WIDTH_MID / 2;
+            if (laneIdx === this.laneNum - 1) {
+                scoreTextX += (C_GS.LANE_WIDTH_ENDS - C_GS.LANE_WIDTH_MID) / 2;
+            }
+        }
+
+        let scoreText = this.add.text(scoreTextX, scoreTextY, scoreRank, {
+            fontSize: C_GS.NOTES_SCORE_TEXT_SIZE,
+            fontFamily: C_COMMON.FONT_FAMILY_BIT12,
+            fill: C_GS.NOTES_SCORE_TEXT_COLOR_MAP[scoreRank]
+        }).setOrigin(0.5);
+
+        this.tweens.add({
+            targets: scoreText,
+            y: scoreText.y - C_GS.NOTES_SCORE_TEXT_UP_DIST,
+            duration: C_GS.NOTES_SCORE_TEXT_DISP_TIME,
+            ease: 'Linear',
+            onComplete: () => {
+                // テキストを削除
+                scoreText.destroy();
+            }
+        });
+
     }
 }
