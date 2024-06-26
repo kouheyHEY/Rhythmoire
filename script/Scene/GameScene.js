@@ -83,23 +83,19 @@ class GameScene extends Phaser.Scene {
         this.frameCount++;
 
         // ノーツの生成
-        if (this.frameCount % 30 === 0 && this.createNotesFlg) {
+        if (this.frameCount % 30 === 0 && this.noteMng.canCreateNoteFlg) {
             console.log("noteCreate");
             this.noteMng.createNoteToLane((this.frameCount / 30) % this.laneNum);
         }
 
-        if (this.noteMng.tweenPauseFlg && this.createNotesFlg) {
-            this.createNotesFlg = false;
-        }
-
         // ボタン押下時、ノーツのアニメーション再開＋ノーツ生成
         let laneKeyPushed = this.inputMng.getPushedKeyOf(C_GS.LANE_KEY_LIST[this.noteMng.onLineLane]);
-        if (this.noteMng.tweenPauseFlg && laneKeyPushed) {
-            console.log("noteCreate");
+        if (laneKeyPushed) {
             this.noteMng.removeNote(this.noteMng.onLineLane);
-            this.noteMng.resumeAllNotes();
-            this.noteMng.createNoteToLane(Math.floor(Math.random() * this.laneNum));
         }
+
+        // ノーツの移動
+        this.noteMng.moveAllNotes();
 
     }
 
@@ -120,7 +116,7 @@ class GameScene extends Phaser.Scene {
         let notesLineWidth = 0;
         let notesLineHeight = C_GS.NOTESLINE_WEIGHT;
         let notesLineX = C_GS.LANE_INIT_X;
-        let notesLineY = C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y - C_GS.NOTESLINE_WEIGHT * 3 / 2;
+        let notesLineY = C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y;
 
         for (let l = 0; l <= this.laneNum; l++) {
             // レーンの色を設定
@@ -182,6 +178,14 @@ class GameScene extends Phaser.Scene {
         this.grph.beginPath()
             .moveTo(notesLineX - C_GS.LANE_WEIGHT / 2, notesLineY)
             .lineTo(notesLineX + notesLineWidth + C_GS.LANE_WEIGHT / 2, notesLineY)
+            .closePath()
+            .fill()
+            .stroke();
+
+        this.grph.lineStyle(1, 0xFFFFFF);
+        this.grph.beginPath()
+            .moveTo(0, notesLineY)
+            .lineTo(10000, notesLineY)
             .closePath()
             .fill()
             .stroke();

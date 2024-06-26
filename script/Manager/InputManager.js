@@ -20,4 +20,13 @@ class InputManager {
     getPushedKeyOf(keyCode) {
         return this.observeKeyMap[keyCode].isDown;
     }
+
+    /**
+     * 指定したキーが押されたかどうかを取得
+     * @param {string} keyCode 取得するキーのキーコード
+     * @returns キーの状態（ちょうど押されていたらtrue）
+     */
+    getJustPushedKeyOf(keyCode) {
+        return Phaser.Input.Keyborad.JustDown(this.observeKeyMap[keyCode]);
+    }
 }

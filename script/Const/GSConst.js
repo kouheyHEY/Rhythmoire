@@ -47,8 +47,8 @@ const C_GS = {
     /** ノーツの色 中間_偶数 */
     NOTES_COLOR_EVEN_EDGE: 0x0A550A,
 
-    /** ノーツの下降スピード（px/1s） */
-    NOTES_SPEED: 480,
+    /** ノーツの下降スピード（px/frame） */
+    NOTES_SPEED: 6,
 
     /** ノーツの判定幅 frame（GREAT） */
     NOTES_SCORE_GREAT: 2,

@@ -6,6 +6,7 @@ class NoteManager {
         this.tweenGroupList = [];
 
         this.tweenPauseFlg = false;
+        this.canCreateNoteFlg = true;
 
         /** ノーツが乗っているレーンの番号 */
         this.onLineLane = 0;
@@ -15,6 +16,16 @@ class NoteManager {
             this.noteGroupList.push(this.scene.add.group());
             this.tweenGroupList.push(this.scene.add.group());
         }
+
+        // 判定線までの距離
+        let distLine = C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y;
+        // 画面上部からの、ノーツの相対位置
+        let noteOffsetY = C_GS.NOTES_SPEED * 3;
+        // ノーツの初期位置
+        this.noteInitY = distLine - (
+            Math.round(distLine / C_GS.NOTES_SPEED) * C_GS.NOTES_SPEED
+            + noteOffsetY
+        );
     }
 
     /**
@@ -34,7 +45,7 @@ class NoteManager {
 
         // ノーツの初期位置
         let noteInitX = C_GS.LANE_INIT_X;
-        let noteInitY = - C_GS.NOTES_HEIGHT * 2;
+        let noteInitY = this.noteInitY;
 
         if (laneIdx >= 1) {
             noteInitX += C_GS.LANE_WIDTH_ENDS + (laneIdx - 1) * C_GS.LANE_WIDTH_MID;
@@ -74,70 +85,20 @@ class NoteManager {
 
         // ノートオブジェクトの生成
         let note = this.scene.add.graphics();
+        note.x = noteInitX;
+        note.y = noteInitY;
+
+        console.log(`note: (${note.x}, ${note.y})`);
+        console.log(`rect: (${noteInitX}, ${noteInitY})`);
 
         note.lineStyle(2, noteColorEdge)
             .fillStyle(noteColor, 1);
 
         // 長方形を描画
-        note.fillRect(noteInitX, noteInitY, noteW, noteH)
-            .strokeRect(noteInitX, noteInitY, noteW, noteH);
-
-        // 図形を下に移動するトゥイーンを作成
-        // 等速直線運動
-        this.tweenGroupList[laneIdx].add(
-            this.scene.tweens.add({
-                targets: note,
-                y: C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y,
-                duration: 1000 * C_COMMON.D_HEIGHT / C_GS.NOTES_SPEED,
-                ease: 'Linear',
-                onComplete: () => {
-                    this.setOnLineLane(laneIdx);
-                    this.pauseAllNotes(laneIdx);
-                }
-            })
-        );
+        note.fillRect(0, - C_GS.NOTES_HEIGHT / 2, noteW, noteH)
+            .strokeRect(0, - C_GS.NOTES_HEIGHT / 2, noteW, noteH);
 
         this.noteGroupList[laneIdx].add(note);
-
-    }
-
-    /**
-     * ノーツが停止しているレーンの番号を設定する
-     * @param {number} laneIdx ノーツが停止しているレーンの番号
-     */
-    setOnLineLane(laneIdx) {
-        this.onLineLane = laneIdx;
-    }
-
-    /**
-     * すべてのトゥイーンを停止する
-     */
-    pauseAllNotes() {
-        if (this.tweenPauseFlg) {
-            return;
-        }
-
-        console.log("STOP LANE: " + this.onLineLane);
-        this.scene.tweens.pauseAll();
-        this.tweenPauseFlg = true;
-
-        // ノーツと判定ラインの距離をデバッグ出力
-        if (this.onLineLane !== null) {
-            console.log(`judgeH : ${this.noteGroupList[this.onLineLane].getChildren()[0].y -
-                (C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y)
-                }`);
-        }
-    }
-
-    /**
-     * すべてのトゥイーンを再開する
-     */
-    resumeAllNotes() {
-        if (!this.tweenPauseFlg) {
-            return;
-        }
-        this.scene.tweens.resumeAll();
-        this.tweenPauseFlg = false;
     }
 
     /**
@@ -145,9 +106,30 @@ class NoteManager {
      * @param {number}
      */
     removeNote(lane) {
-        let removeNote = this.noteGroupList[lane].getChildren()[0];
-        this.noteGroupList[lane].remove(removeNote);
+        let removeNote = this.noteGroupList[lane].getChildren().shift();
         removeNote.destroy();
+    }
+
+    /**
+     * 全てのノーツを下に移動させる
+     */
+    moveAllNotes() {
+        for (let noteGroup of this.noteGroupList) {
+            let removeNoteFlg = false;
+            for (const [idx, note] of noteGroup.getChildren().entries()) {
+                note.y += C_GS.NOTES_SPEED;
+                if (note.y > (C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y)) {
+                    console.lg("aaa");
+                }
+                if (idx === 0 && note.y > C_COMMON.D_HEIGHT) {
+                    removeNoteFlg = true;
+                }
+            }
+            if (removeNoteFlg) {
+                let note = noteGroup.getChildren().shift();
+                note.destroy();
+            }
+        }
     }
 
 }
