@@ -85,6 +85,15 @@ const C_GS = {
     /** 判定線の太さ */
     NOTESLINE_WEIGHT: 16,
 
+    /** 小節線の色 */
+    MEASURE_LINE_COLOR: 0xFFFFFF,
+    /** 小節線の透明度 表拍以外 */
+    MEASURE_LINE_MID: 0.25,
+    /** 小節線の太さ 表拍 */
+    MEASURE_LINE_WEIGHT: 2,
+    /** 小節線の太さ 表拍以外 */
+    MEASURE_LINE_WEIGHT_MID: 1,
+
     /** レーンごとのキーのリスト */
     LANE_KEY_LIST: [
         "S",

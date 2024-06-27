@@ -23,11 +23,6 @@ class GameScene extends Phaser.Scene {
         // 1ノーツ当たりの理想スコア
         this.noteScore = C_GS.NOTES_SCORE_GREAT;
 
-        // 秒あたりのノーツの生成数
-        this.notePerSec = 8;
-        // ノーツの生成間隔
-        this.noteFrameSpan = Math.floor(C_COMMON.FPS / this.notePerSec);
-
         // ゲームオーバーフラグ
         this.gameOverFlg = false;
         // ノーツ生成可能フラグ
@@ -215,6 +210,9 @@ class GameScene extends Phaser.Scene {
             .closePath()
             .fill()
             .stroke();
+
+        // ノーツマネージャに判定線の長さを設定
+        this.noteMng.msrLineLen = notesLineWidth + C_GS.LANE_WEIGHT;
     }
 
     /**

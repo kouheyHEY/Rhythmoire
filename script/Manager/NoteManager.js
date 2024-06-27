@@ -3,7 +3,7 @@ class NoteManager {
         this.scene = scene;
         this.laneNum = laneNum;
         this.noteGroupList = [];
-        this.tweenGroupList = [];
+        this.msrLineGroup = this.scene.add.group();
 
         this.tweenPauseFlg = false;
         this.canCreateNoteFlg = true;
@@ -11,9 +11,10 @@ class NoteManager {
         // ノーツとトゥイーンのグループを作成する
         for (let l = 0; l < this.laneNum; l++) {
             this.noteGroupList.push(this.scene.add.group());
-            this.tweenGroupList.push(this.scene.add.group());
         }
 
+        // 小節線の長さ
+        this.msrLineLen = 0;
         // 判定線までの距離
         let distLine = C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y;
         // 画面上部からの、ノーツの相対位置
@@ -95,6 +96,36 @@ class NoteManager {
         this.noteGroupList[laneIdx].add(note);
     }
 
+    /** 小節線を生成する
+     * @param {boolean} isMid 表拍でないかどうか
+     */
+    createMsrLine(isMid) {
+
+        let line = this.scene.add.graphics();
+        line.y = this.noteInitY;
+
+        // 判定線を描画する
+        if (isMid) {
+            line.lineStyle(C_GS.MEASURE_LINE_WEIGHT_MID, C_GS.MEASURE_LINE_COLOR, C_GS.MEASURE_LINE_MID);
+        } else {
+            line.lineStyle(C_GS.MEASURE_LINE_WEIGHT, C_GS.MEASURE_LINE_COLOR, 1);
+        }
+
+        line.beginPath()
+            .moveTo(
+                C_GS.LANE_INIT_X - C_GS.LANE_WEIGHT / 2,
+                C_GS.NOTES_HEIGHT / 2)
+            .lineTo(
+                C_GS.LANE_INIT_X - C_GS.LANE_WEIGHT / 2 + this.msrLineLen,
+                C_GS.NOTES_HEIGHT / 2)
+            .closePath()
+            .fill()
+            .stroke();
+
+        this.msrLineGroup.add(line);
+
+    }
+
     /**
      * ノーツを削除する
      * @param {number}
@@ -122,6 +153,19 @@ class NoteManager {
                 // エラー表示を行う
                 this.scene.dispNoteScoreRank('ERROR', laneIdx);
             }
+        }
+
+        let removeLineFlg = false;
+        for (const [idx, line] of this.msrLineGroup.getChildren().entries()) {
+            line.y += C_GS.NOTES_SPEED;
+            if (idx === 0 && line.y > C_COMMON.D_HEIGHT) {
+                removeLineFlg = true;
+            }
+        }
+
+        if (removeLineFlg) {
+            let line = this.msrLineGroup.getChildren().shift();
+            line.destroy();
         }
     }
 
