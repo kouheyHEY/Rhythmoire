@@ -104,4 +104,19 @@ const C_GS = {
         "J",
         "K"
     ],
+
+    /** ノーツの生成パターン らせん */
+    CREATE_PTRN_SPIRAL: 1,
+    /** ノーツの生成パターン 階段 */
+    CREATE_PTRN_STAIR: 2,
+    /** ノーツの生成パターン ランダム */
+    CREATE_PTRN_RANDOM: 3,
+    /** ノーツの生成パターン 縦連 */
+    CREATE_PTRN_TATEREN: 4,
+
+    /** 同時押しの対応モード 同時押しなし */
+    MULTIMODE_OFF: 1,
+    /** 同時押しの対応モード 同時押しあり */
+    MULTIMODE_ON: 2,
+
 };
