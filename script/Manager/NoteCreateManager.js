@@ -42,7 +42,7 @@ class NoteCreateManager {
         // 現時点の小節内でのノーツ数
         this.curNotesInMsr = 0;
         // 小節当たりのノーツ数
-        this.notePerMsr = 16;
+        this.notePerMsr = 8;
         // ノーツの生成間隔
         this.noteFrameSpan = this.beat * this.msrLineFrameSpan / this.notePerMsr;
 
@@ -147,9 +147,7 @@ class NoteCreateManager {
             } else if (this.createPtrn === C_GS.CREATE_PTRN_RANDOM) {
                 let laneList = this.createPtrnRandom();
                 for (let l of laneList) {
-                    this.noteMng.createNoteToLane(
-                        Math.floor(Math.random() * l)
-                    );
+                    this.noteMng.createNoteToLane(l);
                 }
 
             }
