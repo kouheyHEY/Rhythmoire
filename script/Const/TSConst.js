@@ -1,15 +1,32 @@
 const C_TS = {
-    /** モードの表示用文字列 階段 */
-    MODE_DISP_STR_STAIR: 'かいだん',
-    /** モードの表示用文字列 らせん */
-    MODE_DISP_STR_SPIRAL: 'らせん',
-    /** モードの表示用文字列 ランダム */
-    MODE_DISP_STR_RANDOM: 'らんだむ',
+    /** モード らせん */
+    MODE_SPRIRAL: 1,
+    /** モード 階段 */
+    MODE_STAIR: 2,
+    /** モード ランダム */
+    MODE_RANDOM: 3,
+    /** モード 縦連 */
+    MODE_TATEREN: 4,
+    /** 各モードの値と表示文字列 */
+    MODE_DISP_STR_MAP: {
+        '1': 'らせん',
+        '2': 'かいだん',
+        '3': 'らんだむ',
+        '4': 'たてれん',
+    },
 
-    /** 文字列 有効 */
-    STR_VALID: 'ゆうこう',
-    /** 文字列 無効 */
-    STR_INVALID: 'むこう',
+    /** 同時押しモード 有効 */
+    MULTI_VALID: 1,
+    /** 同時押しモード 無効 */
+    MULTI_INVALID: 2,
+    /** 同時押しモード 同時押しのみ */
+    MULTI_ONLY: 3,
+    /** 同時押しモードの値と表示文字列 */
+    MULTI_DISP_STR_MAP: {
+        '1': 'むこう',
+        '2': 'ゆうこう',
+        '3': 'おんりー',
+    },
 
     /** 項目名 モード */
     COL_STR_MODE: 'もーど',
@@ -19,6 +36,7 @@ const C_TS = {
     COL_STR_LANE_NUM: 'れーんのかず',
     /** 項目名 同時押し有効レーン数 */
     COL_STR_MULTI_LANE_NUM: 'さいだいどうじおし',
+
 
     /** 表示用文字列 スタートボタン */
     DISP_STR_START: 'START',
@@ -34,8 +52,10 @@ const C_TS = {
     DISP_POS_COL2: C_COMMON.D_WIDTH * 2 / 3,
 
     /** 表示位置 初期Y座標 */
-    DISP_POS_INIT_Y: 220,
-    /** 表示位置 垂直間隔 */
-    DISP_POS_SPAN_VERT: 100,
+    DISP_POS_INIT_Y: 120,
+    /** 表示位置 項目間の垂直間隔 */
+    DISP_POS_SPAN_VERT_COL: 100,
+    /** 表示位置 項目名と項目の垂直間隔 */
+    DISP_POS_SPAN_VERT_COLVAL: 60,
 
 };
