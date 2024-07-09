@@ -87,7 +87,13 @@ class TitleScene extends Phaser.Scene {
                 fontSize: C_COMMON.FONT_SIZE_SMALL,
                 fontFamily: C_COMMON.FONT_FAMILY_BIT12,
                 fill: '#fff'
-            }).setOrigin(0.5);
+            }).setOrigin(0.5)
+            .setInteractive();
+        // 押下時テキストを変更
+        curModeText.on('pointerdown', () => {
+            this.noteMode = this.noteMode % Object.keys(C_TS.MODE_DISP_STR_MAP).length + 1;
+            curModeText.setText(C_TS.MODE_DISP_STR_MAP[this.noteMode]);
+        });
 
         // 現在の同時押しモードの表示
         const curMultiModeText = this.add.text(
@@ -96,7 +102,13 @@ class TitleScene extends Phaser.Scene {
                 fontSize: C_COMMON.FONT_SIZE_SMALL,
                 fontFamily: C_COMMON.FONT_FAMILY_BIT12,
                 fill: '#fff'
-            }).setOrigin(0.5);
+            }).setOrigin(0.5)
+            .setInteractive();
+        // 押下時テキストを変更
+        curMultiModeText.on('pointerdown', () => {
+            this.multiMode = this.multiMode % Object.keys(C_TS.MULTI_DISP_STR_MAP).length + 1;
+            curMultiModeText.setText(C_TS.MULTI_DISP_STR_MAP[this.multiMode]);
+        });
 
         // 表示位置の調整
         dispY += C_TS.DISP_POS_SPAN_VERT_COL;
@@ -129,7 +141,13 @@ class TitleScene extends Phaser.Scene {
                 fontSize: C_COMMON.FONT_SIZE_SMALL,
                 fontFamily: C_COMMON.FONT_FAMILY_BIT12,
                 fill: '#fff'
-            }).setOrigin(0.5);
+            }).setOrigin(0.5)
+            .setInteractive();
+        // 押下時テキストを変更
+        laneNumText.on('pointerdown', () => {
+            this.laneNum = (this.laneNum - 1) % (C_GS.LANE_MAX - C_GS.LANE_MIN + 1) + 2;
+            laneNumText.setText(this.laneNum);
+        });
 
         // 最大同時押し数を表示
         const multiLaneNumText = this.add.text(
@@ -138,7 +156,17 @@ class TitleScene extends Phaser.Scene {
                 fontSize: C_COMMON.FONT_SIZE_SMALL,
                 fontFamily: C_COMMON.FONT_FAMILY_BIT12,
                 fill: '#fff'
-            }).setOrigin(0.5);
+            }).setOrigin(0.5)
+            .setInteractive();
+        // 押下時テキストを変更
+        multiLaneNumText.on('pointerdown', () => {
+            this.maxMultiLaneNum =
+                (this.maxMultiLaneNum - 1) % (C_GS.LANE_MAX - C_GS.LANE_MIN + 1) + 2;
+            if (this.maxMultiLaneNum > this.laneNum) {
+                this.maxMultiLaneNum = C_GS.LANE_MIN;
+            }
+            multiLaneNumText.setText(this.maxMultiLaneNum);
+        });
 
     }
 }
