@@ -1,7 +1,8 @@
 class NoteManager {
-    constructor(scene, laneNum) {
+    constructor(scene, gameSetInfo) {
         this.scene = scene;
-        this.laneNum = laneNum;
+        /** @type {GameSetInfoModel} ゲーム設定情報 */
+        this.gsInfo = gameSetInfo;
         this.noteGroupList = [];
         this.msrLineGroup = this.scene.add.group();
 
@@ -9,7 +10,7 @@ class NoteManager {
         this.canCreateNoteFlg = true;
 
         // ノーツとトゥイーンのグループを作成する
-        for (let l = 0; l < this.laneNum; l++) {
+        for (let l = 0; l < this.gsInfo.laneNum; l++) {
             this.noteGroupList.push(this.scene.add.group());
         }
 
@@ -37,7 +38,7 @@ class NoteManager {
         }
 
         // レーン数チェック
-        if (laneIdx >= this.laneNum || laneIdx < 0) {
+        if (laneIdx >= this.gsInfo.laneNum || laneIdx < 0) {
             return false;
         }
 
@@ -53,7 +54,7 @@ class NoteManager {
         let noteW = 0;
         let noteH = 0;
 
-        if (laneIdx === 0 || laneIdx === this.laneNum - 1) {
+        if (laneIdx === 0 || laneIdx === this.gsInfo.laneNum - 1) {
             noteW = C_GS.LANE_WIDTH_ENDS;
         } else {
             noteW = C_GS.LANE_WIDTH_MID;
@@ -68,7 +69,7 @@ class NoteManager {
         if (laneIdx === 0) {
             noteColor = C_GS.NOTES_COLOR_LEFT;
             noteColorEdge = C_GS.NOTES_COLOR_LEFT_EDGE;
-        } else if (laneIdx === this.laneNum - 1) {
+        } else if (laneIdx === this.gsInfo.laneNum - 1) {
             noteColor = C_GS.NOTES_COLOR_RIGHT;
             noteColorEdge = C_GS.NOTES_COLOR_RIGHT_EDGE;
         } else {

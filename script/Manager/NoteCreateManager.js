@@ -1,20 +1,15 @@
 class NoteCreateManager {
-    constructor(laneNum, noteMng) {
-        // レーンの数
-        this.laneNum = laneNum;
-
-        // ノーツの生成パターン
-        this.createPtrn = C_GS.CREATE_PTRN_RANDOM;
+    constructor(gameSetInfo, noteMng) {
+        /** @type {GameSetInfoModel} ゲーム設定情報 */
+        this.gsInfo = gameSetInfo;
 
         // ランダムの場合の設定
         // 縦連の許容個数
         this.dplctLimit = 2;
-        // 同時押しモード
-        this.multiMode = C_GS.MULTIMODE_ON;
         // 同時押しモードが混在の場合の、同時押しの割合
         this.multiRate = 0.5;
         // 同時押しの数ごとの許容フラグ配列
-        this.multiNumFlgList = Array(this.laneNum);
+        this.multiNumFlgList = Array(this.gsInfo.laneNum);
         this.multiNumFlgList.fill(true);
         // 許容する同時押しの数
         this.multiNumList = [];
@@ -61,7 +56,7 @@ class NoteCreateManager {
 
         this.createdLane += this.createNoteDir;
 
-        if (this.createdLane === this.laneNum - 1 || this.createdLane === 0) {
+        if (this.createdLane === this.gsInfo.laneNum - 1 || this.createdLane === 0) {
             // らせんの方向転換
             this.createNoteDir *= -1;
         }
@@ -76,7 +71,7 @@ class NoteCreateManager {
     createPtrnStair() {
         let createLane = this.createdLane;
 
-        this.createdLane = (this.laneNum + this.createdLane + this.createNoteDir) % this.laneNum;
+        this.createdLane = (this.gsInfo.laneNum + this.createdLane + this.createNoteDir) % this.gsInfo.laneNum;
 
         return createLane;
     }
@@ -88,14 +83,14 @@ class NoteCreateManager {
     createPtrnRandom() {
         let createLane = 0;
         // 同時押しをする場合
-        if (this.multiMode === C_GS.MULTIMODE_ON) {
+        if (this.gsInfo.multiMode === C_GS.MULTIMODE_ON) {
             // 同時押しの個数を取得
             let multiNum = this.multiNumList[
                 Math.floor(Math.random() * this.multiNumList.length)
             ];
 
             // 同時押しをするレーンの番号を取得
-            let laneRange = Array.from(Array(this.laneNum), (_, i) => i);
+            let laneRange = Array.from(Array(this.gsInfo.laneNum), (_, i) => i);
             let multiLaneList = [];
 
             for (let i = 0; i < multiNum; i++) {
@@ -110,7 +105,7 @@ class NoteCreateManager {
             createLane = multiLaneList;
         } else {
             // 同時押ししない場合は単一の数値を返す
-            createLane = [Math.floor(Math.random() * this.laneNum)];
+            createLane = [Math.floor(Math.random() * this.gsInfo.laneNum)];
         }
 
         return createLane;
@@ -138,13 +133,13 @@ class NoteCreateManager {
             >= this.curNotesInMsr * this.noteFrameSpan
         ) {
             // ノーツの生成パターンによって場合分け
-            if (this.createPtrn === C_GS.CREATE_PTRN_SPIRAL) {
+            if (this.gsInfo.noteMode === C_GS.CREATE_PTRN_SPIRAL) {
                 this.noteMng.createNoteToLane(this.createPtrnSpiral());
 
-            } else if (this.createPtrn === C_GS.CREATE_PTRN_STAIR) {
+            } else if (this.gsInfo.noteMode === C_GS.CREATE_PTRN_STAIR) {
                 this.noteMng.createNoteToLane(this.createPtrnStair());
 
-            } else if (this.createPtrn === C_GS.CREATE_PTRN_RANDOM) {
+            } else if (this.gsInfo.noteMode === C_GS.CREATE_PTRN_RANDOM) {
                 let laneList = this.createPtrnRandom();
                 for (let l of laneList) {
                     this.noteMng.createNoteToLane(l);

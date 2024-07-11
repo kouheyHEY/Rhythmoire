@@ -19,15 +19,16 @@ class TitleScene extends Phaser.Scene {
         }
         */
 
-        // 各モードの現在の値
+        /** @type {GameSetInfoModel} 各モードの設定値 */
+        this.gsInfo = new GameSetInfoModel();
         // モード
-        this.noteMode = C_TS.MODE_SPRIRAL;
+        this.gsInfo.noteMode = C_TS.MODE_SPRIRAL;
         // 同時押しモード
-        this.multiMode = C_TS.MULTI_VALID;
+        this.gsInfo.multiMode = C_TS.MULTI_VALID;
         // レーン数
-        this.laneNum = 3;
+        this.gsInfo.laneNum = 3;
         // 最大同時押し数
-        this.maxMultiLaneNum = 2;
+        this.gsInfo.maxMultiLaneNum = 2;
 
         // タイトル表示
         this.add.text(
@@ -50,7 +51,7 @@ class TitleScene extends Phaser.Scene {
         startButton.setInteractive();
         // 押下時ゲームシーンに遷移
         startButton.on('pointerdown', () => {
-            this.scene.start(C_COMMON.SCENE_GAMESCENE);
+            this.scene.start(C_COMMON.SCENE_GAMESCENE, this.gsInfo);
         });
 
 
@@ -82,7 +83,7 @@ class TitleScene extends Phaser.Scene {
 
         // 現在のモードの表示
         const curModeText = this.add.text(
-            C_TS.DISP_POS_COL1, dispY, C_TS.MODE_DISP_STR_MAP[this.noteMode],
+            C_TS.DISP_POS_COL1, dispY, C_TS.MODE_DISP_STR_MAP[this.gsInfo.noteMode],
             {
                 fontSize: C_COMMON.FONT_SIZE_SMALL,
                 fontFamily: C_COMMON.FONT_FAMILY_BIT12,
@@ -91,13 +92,13 @@ class TitleScene extends Phaser.Scene {
             .setInteractive();
         // 押下時テキストを変更
         curModeText.on('pointerdown', () => {
-            this.noteMode = this.noteMode % Object.keys(C_TS.MODE_DISP_STR_MAP).length + 1;
-            curModeText.setText(C_TS.MODE_DISP_STR_MAP[this.noteMode]);
+            this.gsInfo.noteMode = this.gsInfo.noteMode % Object.keys(C_TS.MODE_DISP_STR_MAP).length + 1;
+            curModeText.setText(C_TS.MODE_DISP_STR_MAP[this.gsInfo.noteMode]);
         });
 
         // 現在の同時押しモードの表示
         const curMultiModeText = this.add.text(
-            C_TS.DISP_POS_COL2, dispY, C_TS.MULTI_DISP_STR_MAP[this.multiMode],
+            C_TS.DISP_POS_COL2, dispY, C_TS.MULTI_DISP_STR_MAP[this.gsInfo.multiMode],
             {
                 fontSize: C_COMMON.FONT_SIZE_SMALL,
                 fontFamily: C_COMMON.FONT_FAMILY_BIT12,
@@ -106,8 +107,8 @@ class TitleScene extends Phaser.Scene {
             .setInteractive();
         // 押下時テキストを変更
         curMultiModeText.on('pointerdown', () => {
-            this.multiMode = this.multiMode % Object.keys(C_TS.MULTI_DISP_STR_MAP).length + 1;
-            curMultiModeText.setText(C_TS.MULTI_DISP_STR_MAP[this.multiMode]);
+            this.gsInfo.multiMode = this.gsInfo.multiMode % Object.keys(C_TS.MULTI_DISP_STR_MAP).length + 1;
+            curMultiModeText.setText(C_TS.MULTI_DISP_STR_MAP[this.gsInfo.multiMode]);
         });
 
         // 表示位置の調整
@@ -136,7 +137,7 @@ class TitleScene extends Phaser.Scene {
 
         // レーン数を表示
         const laneNumText = this.add.text(
-            C_TS.DISP_POS_COL1, dispY, this.laneNum,
+            C_TS.DISP_POS_COL1, dispY, this.gsInfo.laneNum,
             {
                 fontSize: C_COMMON.FONT_SIZE_SMALL,
                 fontFamily: C_COMMON.FONT_FAMILY_BIT12,
@@ -145,13 +146,13 @@ class TitleScene extends Phaser.Scene {
             .setInteractive();
         // 押下時テキストを変更
         laneNumText.on('pointerdown', () => {
-            this.laneNum = (this.laneNum - 1) % (C_GS.LANE_MAX - C_GS.LANE_MIN + 1) + 2;
-            laneNumText.setText(this.laneNum);
+            this.gsInfo.laneNum = (this.gsInfo.laneNum - 1) % (C_GS.LANE_MAX - C_GS.LANE_MIN + 1) + 2;
+            laneNumText.setText(this.gsInfo.laneNum);
         });
 
         // 最大同時押し数を表示
         const multiLaneNumText = this.add.text(
-            C_TS.DISP_POS_COL2, dispY, this.maxMultiLaneNum,
+            C_TS.DISP_POS_COL2, dispY, this.gsInfo.maxMultiLaneNum,
             {
                 fontSize: C_COMMON.FONT_SIZE_SMALL,
                 fontFamily: C_COMMON.FONT_FAMILY_BIT12,
@@ -160,12 +161,12 @@ class TitleScene extends Phaser.Scene {
             .setInteractive();
         // 押下時テキストを変更
         multiLaneNumText.on('pointerdown', () => {
-            this.maxMultiLaneNum =
-                (this.maxMultiLaneNum - 1) % (C_GS.LANE_MAX - C_GS.LANE_MIN + 1) + 2;
-            if (this.maxMultiLaneNum > this.laneNum) {
-                this.maxMultiLaneNum = C_GS.LANE_MIN;
+            this.gsInfo.maxMultiLaneNum =
+                (this.gsInfo.maxMultiLaneNum - 1) % (C_GS.LANE_MAX - C_GS.LANE_MIN + 1) + 2;
+            if (this.gsInfo.maxMultiLaneNum > this.gsInfo.laneNum) {
+                this.gsInfo.maxMultiLaneNum = C_GS.LANE_MIN;
             }
-            multiLaneNumText.setText(this.maxMultiLaneNum);
+            multiLaneNumText.setText(this.gsInfo.maxMultiLaneNum);
         });
 
     }

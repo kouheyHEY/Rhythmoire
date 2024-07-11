@@ -3,6 +3,15 @@ class GameScene extends Phaser.Scene {
         super({ key: C_COMMON.SCENE_GAMESCENE });
     }
 
+    /**
+     * タイトルから値を受け取る
+     * @param {GameSetInfoModel} data ゲームの設定情報モデル
+     */
+    init(data) {
+        /** @type {GameSetInfoModel} ゲーム設定情報 */
+        this.gsInfo = data;
+    }
+
     create() {
         /* 変数定義 */
 
@@ -17,9 +26,6 @@ class GameScene extends Phaser.Scene {
         this.pointerX = 0;
         this.pointerY = 0;
 
-        // ノーツ数
-        this.laneNum = 4;
-
         // 1ノーツ当たりの理想スコア
         this.noteScore = C_GS.NOTES_SCORE_GREAT;
 
@@ -32,7 +38,7 @@ class GameScene extends Phaser.Scene {
         this.scoreInfo = new ScoreInfo();
 
         /** @type {NoteManager} ノートマネージャ */
-        this.noteMng = new NoteManager(this, this.laneNum);
+        this.noteMng = new NoteManager(this, this.gsInfo);
 
         /** @type {InputManager} キーイベントマネージャ */
         this.inputMng = new InputManager(this);
@@ -41,7 +47,7 @@ class GameScene extends Phaser.Scene {
         }
 
         /** @type {NoteCreateManager} ノーツ作成マネージャ */
-        this.noteCreateMng = new NoteCreateManager(this.laneNum, this.noteMng);
+        this.noteCreateMng = new NoteCreateManager(this.gsInfo, this.noteMng);
 
         /* 画面描画 */
 
@@ -97,7 +103,7 @@ class GameScene extends Phaser.Scene {
 
         // ボタン押下時、ノーツの消去を行う
         for (const [idx, key] of C_GS.LANE_KEY_LIST.entries()) {
-            if (idx > this.laneNum - 1) {
+            if (idx > this.gsInfo.laneNum - 1) {
                 break;
             }
             if (this.inputMng.getJustPushedKeyOf(key)) {
@@ -147,12 +153,12 @@ class GameScene extends Phaser.Scene {
         let notesLineX = C_GS.LANE_INIT_X;
         let notesLineY = C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y;
 
-        for (let l = 0; l <= this.laneNum; l++) {
+        for (let l = 0; l <= this.gsInfo.laneNum; l++) {
             // レーンの色を設定
             if (l === 0) {
                 // 左端の場合
                 laneColor = C_GS.LANE_COLOR_LEFT;
-            } else if (l === this.laneNum) {
+            } else if (l === this.gsInfo.laneNum) {
                 // 中間の場合
                 laneColor = C_GS.LANE_COLOR_RIGHT;
             } else {
@@ -165,7 +171,7 @@ class GameScene extends Phaser.Scene {
                 // 左端の場合
                 laneBgColor = C_GS.LANE_BGCOLOR_LEFT;
                 laneWidth = C_GS.LANE_WIDTH_ENDS;
-            } else if (l === this.laneNum - 1) {
+            } else if (l === this.gsInfo.laneNum - 1) {
                 // 中間の場合
                 laneBgColor = C_GS.LANE_BGCOLOR_RIGHT;
                 laneWidth = C_GS.LANE_WIDTH_ENDS;
@@ -186,7 +192,7 @@ class GameScene extends Phaser.Scene {
                 .fill()
                 .stroke();
 
-            if (l < this.laneNum) {
+            if (l < this.gsInfo.laneNum) {
                 // レーンの背景色の設定
                 this.grph.fillStyle(laneBgColor);
                 // レーンの背景を描画
@@ -196,7 +202,7 @@ class GameScene extends Phaser.Scene {
             laneStartX += laneWidth;
             laneEndX += laneWidth;
 
-            if (l !== this.laneNum) {
+            if (l !== this.gsInfo.laneNum) {
                 // 判定線の幅
                 notesLineWidth += laneWidth;
             }
@@ -224,11 +230,11 @@ class GameScene extends Phaser.Scene {
         // レーンの位置を計算
         let scoreTextX = C_GS.LANE_INIT_X + C_GS.LANE_WIDTH_ENDS / 2;
         let scoreTextY = C_COMMON.D_HEIGHT - C_GS.NOTESLINE_Y * 2;
-        if (laneIdx > 0 && laneIdx <= this.laneNum - 1) {
+        if (laneIdx > 0 && laneIdx <= this.gsInfo.laneNum - 1) {
             scoreTextX +=
                 C_GS.LANE_WIDTH_ENDS / 2
                 + (1 + (laneIdx - 1) * 2) * C_GS.LANE_WIDTH_MID / 2;
-            if (laneIdx === this.laneNum - 1) {
+            if (laneIdx === this.gsInfo.laneNum - 1) {
                 scoreTextX += (C_GS.LANE_WIDTH_ENDS - C_GS.LANE_WIDTH_MID) / 2;
             }
         }
