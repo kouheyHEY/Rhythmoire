@@ -8,12 +8,11 @@ class NoteCreateManager {
         this.dplctLimit = 2;
         // 同時押しモードが混在の場合の、同時押しの割合
         this.multiRate = 0.5;
-        // 同時押しの数ごとの許容フラグ配列
-        this.multiNumFlgList = Array(this.gsInfo.laneNum);
-        this.multiNumFlgList.fill(true);
-        // 許容する同時押しの数
+
+        // 許容する同時押しの数をセット
+        this.gsInfo.setMultiNumList();
         this.multiNumList = [];
-        for (const [idx, flg] of this.multiNumFlgList.entries()) {
+        for (const [idx, flg] of this.gsInfo.multiNumFlgList.entries()) {
             if (flg) {
                 this.multiNumList.push(idx + 1);
             }
@@ -83,7 +82,7 @@ class NoteCreateManager {
     createPtrnRandom() {
         let createLane = 0;
         // 同時押しをする場合
-        if (this.gsInfo.multiMode === C_GS.MULTIMODE_ON) {
+        if (this.gsInfo.multiMode !== C_GS.MULTIMODE_OFF) {
             // 同時押しの個数を取得
             let multiNum = this.multiNumList[
                 Math.floor(Math.random() * this.multiNumList.length)
