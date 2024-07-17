@@ -36,13 +36,14 @@ const C_TS = {
     COL_STR_LANE_NUM: 'れーんのかず',
     /** 項目名 同時押し有効レーン数 */
     COL_STR_MULTI_LANE_NUM: 'さいだいどうじおし',
-
+    /** 項目名 縦連数 */
+    COL_STR_TATEREN_NUM: 'たてれんのかず',
 
     /** 表示用文字列 スタートボタン */
     DISP_STR_START: 'START',
 
     /** 表示位置 タイトル */
-    DISP_POS_TITLE_Y: 100,
+    DISP_POS_TITLE_Y: 60,
     /** 表示位置 スタートボタン */
     DISP_POS_START_Y: C_COMMON.D_HEIGHT - 100,
 
@@ -52,9 +53,9 @@ const C_TS = {
     DISP_POS_COL2: C_COMMON.D_WIDTH * 2 / 3,
 
     /** 表示位置 初期Y座標 */
-    DISP_POS_INIT_Y: 120,
+    DISP_POS_INIT_Y: 60,
     /** 表示位置 項目間の垂直間隔 */
-    DISP_POS_SPAN_VERT_COL: 100,
+    DISP_POS_SPAN_VERT_COL: 80,
     /** 表示位置 項目名と項目の垂直間隔 */
     DISP_POS_SPAN_VERT_COLVAL: 60,
 

@@ -21,14 +21,6 @@ class TitleScene extends Phaser.Scene {
 
         /** @type {GameSetInfoModel} 各モードの設定値 */
         this.gsInfo = new GameSetInfoModel();
-        // モード
-        this.gsInfo.noteMode = C_TS.MODE_SPRIRAL;
-        // 同時押しモード
-        this.gsInfo.multiMode = C_TS.MULTI_VALID;
-        // レーン数
-        this.gsInfo.laneNum = 3;
-        // 最大同時押し数
-        this.gsInfo.maxMultiLaneNum = 2;
 
         // タイトル表示
         this.add.text(
@@ -167,6 +159,37 @@ class TitleScene extends Phaser.Scene {
                 this.gsInfo.maxMultiLaneNum = C_GS.LANE_MIN;
             }
             multiLaneNumText.setText(this.gsInfo.maxMultiLaneNum);
+        });
+
+        // 表示位置の調整
+        dispY += C_TS.DISP_POS_SPAN_VERT_COL;
+
+        // 項目名　レーン数を表示
+        const taterenNum = this.add.text(
+            C_TS.DISP_POS_COL1, dispY, C_TS.COL_STR_TATEREN_NUM,
+            {
+                fontSize: C_COMMON.FONT_SIZE_SMALL,
+                fontFamily: C_COMMON.FONT_FAMILY_BIT12,
+                fill: '#fff'
+            }).setOrigin(0.5);
+
+        // 表示位置の調整
+        dispY += C_TS.DISP_POS_SPAN_VERT_COLVAL;
+
+        // 縦連数を表示
+        const taterenNumText = this.add.text(
+            C_TS.DISP_POS_COL1, dispY, this.gsInfo.taterenNum,
+            {
+                fontSize: C_COMMON.FONT_SIZE_SMALL,
+                fontFamily: C_COMMON.FONT_FAMILY_BIT12,
+                fill: '#fff'
+            }).setOrigin(0.5)
+            .setInteractive();
+        // 押下時テキストを変更
+        taterenNumText.on('pointerdown', () => {
+            this.gsInfo.taterenNum =
+                (this.gsInfo.taterenNum - 1) % (C_GS.TATEREN_MAX - C_GS.TATEREN_MIN + 1) + 2;
+            taterenNumText.setText(this.gsInfo.taterenNum);
         });
 
     }

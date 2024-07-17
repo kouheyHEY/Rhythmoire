@@ -8,6 +8,8 @@ class GameSetInfoModel {
         this.laneNum = C_GS.LANE_MIN;
         /** 最大同時押し数 */
         this.maxMultiLaneNum = C_GS.LANE_MIN;
+        /** 縦連数 */
+        this.taterenNum = C_GS.TATEREN_MIN;
 
         /** 同時押しレーン数の許容フラグ配列 */
         this.multiNumFlgList = Array(this.laneNum);

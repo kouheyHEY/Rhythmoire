@@ -40,10 +40,31 @@ class NoteCreateManager {
         // ノーツの生成間隔
         this.noteFrameSpan = this.beat * this.msrLineFrameSpan / this.notePerMsr;
 
-        console.log(`ノーツの生成間隔フレーム:${this.noteFrameSpan}`);
+        // 縦連回数
+        this.curTaterenNum = 0;
+        this.taterenCreateLane = [];
 
         /** @type {NoteManager} */
         this.noteMng = noteMng;
+    }
+
+    /** 縦連にノーツを生成する */
+    createPtrnTateren() {
+        // 指定回数の縦連を生成していた場合、縦連回数を0にする
+        if (this.curTaterenNum === this.gsInfo.taterenNum) {
+            this.curTaterenNum = 0;
+        }
+
+        // 縦連回数が0の場合、新たに縦連を生成する
+        if (this.curTaterenNum === 0) {
+            // 縦連生成レーンを決定
+            this.taterenCreateLane = this.createPtrnRandom();
+        }
+
+        // 縦連回数をカウントする
+        this.curTaterenNum++;
+
+        return this.taterenCreateLane;
     }
 
     /**
@@ -138,6 +159,11 @@ class NoteCreateManager {
             } else if (this.gsInfo.noteMode === C_GS.CREATE_PTRN_STAIR) {
                 this.noteMng.createNoteToLane(this.createPtrnStair());
 
+            } else if (this.gsInfo.noteMode === C_GS.CREATE_PTRN_TATEREN) {
+                let laneList = this.createPtrnTateren();
+                for (let l of laneList) {
+                    this.noteMng.createNoteToLane(l);
+                }
             } else if (this.gsInfo.noteMode === C_GS.CREATE_PTRN_RANDOM) {
                 let laneList = this.createPtrnRandom();
                 for (let l of laneList) {

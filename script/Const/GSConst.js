@@ -124,4 +124,9 @@ const C_GS = {
     /** 同時押しの対応モード 同時押しあり */
     MULTIMODE_ON: 2,
 
+    /** 縦連数 最小 */
+    TATEREN_MIN: 2,
+    /** 縦連数 最大 */
+    TATEREN_MAX: 32,
+
 };
