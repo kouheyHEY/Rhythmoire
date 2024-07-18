@@ -13,6 +13,7 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
+        console.log(this.gsInfo);
         /* 変数定義 */
 
         this.frameCount = 0;

@@ -15,10 +15,10 @@ const C_TS = {
         '4': 'たてれん',
     },
 
-    /** 同時押しモード 有効 */
-    MULTI_VALID: 1,
     /** 同時押しモード 無効 */
-    MULTI_INVALID: 2,
+    MULTI_INVALID: 1,
+    /** 同時押しモード 有効 */
+    MULTI_VALID: 2,
     /** 同時押しモード 同時押しのみ */
     MULTI_ONLY: 3,
     /** 同時押しモードの値と表示文字列 */

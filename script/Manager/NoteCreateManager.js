@@ -122,6 +122,8 @@ class NoteCreateManager {
                 laneRange.splice(laneIndex, 1);
             }
 
+            console.log(this.multiNumList);
+
             createLane = multiLaneList;
         } else {
             // 同時押ししない場合は単一の数値を返す
